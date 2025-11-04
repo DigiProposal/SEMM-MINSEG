@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Costos: Suministro de Ambulancias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .chart-container-tall {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transform: translateY(-5px);
+        }
+    </style>
+    <!-- Constraint Confirmation: NEITHER Mermaid JS NOR SVG were used. -->
+</head>
+<body class="text-slate-800">
+
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-5">
+            <h1 class="text-3xl font-bold text-center text-sky-800">Análisis Financiero: Provisión de Ambulancias</h1>
+            <p class="text-center text-lg text-slate-600 mt-1">Policía Nacional de Panamá vs. Propuesta de Outsourcing (SEMM)</p>
+        </div>
+    </header>
+
+    <nav class="sticky top-0 bg-white shadow-lg z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center space-x-2 sm:space-x-4 md:space-x-8 py-3 overflow-x-auto">
+                <a href="#section1" class="text-sm md:text-base font-medium text-slate-600 hover:text-sky-600 whitespace-nowrap">El Desafío</a>
+                <a href="#section2" class="text-sm md:text-base font-medium text-slate-600 hover:text-sky-600 whitespace-nowrap">Los Modelos</a>
+                <a href="#section3" class="text-sm md:text-base font-medium text-slate-600 hover:text-sky-600 whitespace-nowrap">Costo Inicial (CAPEX)</a>
+                <a href="#section4" class="text-sm md:text-base font-medium text-slate-600 hover:text-sky-600 whitespace-nowrap">Costo Mensual (OPEX)</a>
+                <a href="#section5" class="text-sm md:text-base font-medium text-slate-600 hover:text-sky-600 whitespace-nowrap">Riesgos Ocultos</a>
+                <a href="#section6" class="text-sm md:text-base font-medium text-slate-600 hover:text-sky-600 whitespace-nowrap">Proyección a 5 Años</a>
+                <a href="#section7" class="text-sm md:text-base font-medium text-slate-600 hover:text-sky-600 whitespace-nowrap">Conclusión</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="section1" class="my-12">
+            <h2 class="text-3xl font-bold text-sky-700 mb-4 text-center">El Desafío: 15 Ambulancias 24/7</h2>
+            <p class="text-lg text-slate-700 max-w-4xl mx-auto text-center">
+                El Ministerio de Seguridad y la Policía Nacional requieren una flota operativa de 15 ambulancias de Soporte Avanzado de Vida. La decisión fundamental radica en el modelo financiero y operativo: ¿Es más eficiente para la institución comprar y operar su propia flota, o contratar un servicio especializado a través de una membresía mensual?
+            </p>
+        </section>
+
+        <section id="section2" class="my-12">
+            <h2 class="text-3xl font-bold text-sky-700 mb-6 text-center">Los Dos Modelos de Provisión</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="stat-card border-t-4 border-orange-400">
+                    <h3 class="text-2xl font-bold mb-3 text-orange-600">Modelo 1: Compra y Operación Directa (In-House)</h3>
+                    <p class="text-slate-600">La institución asume el 100% de la inversión inicial y la responsabilidad operativa. Esto incluye:</p>
+                    <ul class="list-disc list-outside pl-5 mt-4 space-y-1 text-slate-600">
+                        <li>Compra de 15 ambulancias y todo el equipo médico.</li>
+                        <li>Contratación, planilla y gestión de personal 24/7 (Paramédicos y Conductores).</li>
+                        <li>Gestión de mantenimientos, reparaciones y seguros.</li>
+                        <li>Compra de insumos, combustible y gestión de flota.</li>
+                        <li>Asume 100% del riesgo de "downtime" (tiempo fuera de servicio).</li>
+                    </ul>
+                </div>
+                <div class="stat-card border-t-4 border-sky-500">
+                    <h3 class="text-2xl font-bold mb-3 text-sky-600">Modelo 2: Outsourcing Especializado (Membresía)</h3>
+                    <p class="text-slate-600">La institución transfiere la inversión y el riesgo operativo a un proveedor (SEMM), pagando una tarifa mensual fija.</p>
+                    <ul class="list-disc list-outside pl-5 mt-4 space-y-1 text-slate-600">
+                        <li><span class="font-bold text-green-600">Cero</span> inversión inicial (CAPEX).</li>
+                        <li>El proveedor suministra las ambulancias y el personal calificado 24/7.</li>
+                        <li>El proveedor gestiona todos los mantenimientos, seguros y permisos.</li>
+                        <li>Garantía de continuidad: Si una unidad falla, el proveedor la reemplaza.</li>
+                        <li>Costo mensual predecible y 100% deducible como gasto (OPEX).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="section3" class="my-12 stat-card">
+            <h2 class="text-3xl font-bold text-sky-700 mb-4 text-center">Costo Inicial (CAPEX): La Barrera de Entrada</h2>
+            <p class="text-lg text-slate-700 max-w-4xl mx-auto text-center mb-8">
+                El Modelo In-House requiere una inversión inicial significativa solo para empezar a operar. El modelo de outsourcing elimina esta barrera por completo.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="text-center p-6 bg-slate-50 rounded-lg">
+                    <h3 class="text-xl font-semibold text-slate-600 mb-2">Inversión Inicial Requerida (In-House)</h3>
+                    <div class="text-6xl font-bold text-orange-500">
+                        B/. 4,050,000
+                    </div>
+                    <p class="text-slate-500 mt-2">(Estimación para 15 ambulancias y equipo) </p>
+                    <h3 class="text-xl font-semibold text-slate-600 mt-8 mb-2">Inversión Inicial (Outsourcing)</h3>
+                    <div class="text-6xl font-bold text-green-600">
+                        B/. 0
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-slate-700 text-center mb-2">Desglose del CAPEX In-House Estimado</h3>
+                    <div class="chart-container">
+                        <canvas id="capexDonutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section4" class="my-12 stat-card">
+            <h2 class="text-3xl font-bold text-sky-700 mb-4 text-center">Costo Operativo Mensual (OPEX) por Ambulancia</h2>
+            <p class="text-lg text-slate-700 max-w-4xl mx-auto text-center mb-8">
+                Al comparar los costos operativos mensuales, el modelo In-House demuestra ser más costoso y complejo, con múltiples rubros variables. El modelo de outsourcing (basado en la propuesta "con recurso humano") unifica todo en una tarifa fija, facilitando la presupuestación.
+            </p>
+            <div class="chart-container-tall">
+                <canvas id="opexBarChart"></canvas>
+            </div>
+        </section>
+
+        <section id="section5" class="my-12 stat-card">
+            <h2 class="text-3xl font-bold text-sky-700 mb-4 text-center">Riesgos Ocultos: El "Efecto Dominó" del Downtime</h2>
+            <p class="text-lg text-slate-700 max-w-4xl mx-auto text-center mb-8">
+                En el modelo In-House, un vehículo dañado no es solo un costo de reparación. Desencadena una costosa reacción en cadena que el modelo de outsourcing absorbe por completo.
+            </p>
+            <div class="flex flex-col md:flex-row md:flex-wrap justify-center items-center gap-4 text-center">
+                <div class="p-4 bg-red-100 border-2 border-red-300 rounded-lg shadow-md min-w-[200px]">
+                    <h4 class="font-bold text-red-800 text-lg">1. Falla de Vehículo</h4>
+                    <p class="text-red-700">Mantenimiento correctivo o accidente.</p>
+                </div>
+                <div class="text-6xl text-slate-400 font-thin hidden md:block">→</div>
+                <div class="text-4xl text-slate-400 font-thin md:hidden">↓</div>
+                <div class="p-4 bg-red-100 border-2 border-red-300 rounded-lg shadow-md min-w-[200px]">
+                    <h4 class="font-bold text-red-800 text-lg">2. Vehículo en Taller</h4>
+                    <p class="text-red-700">Unidad fuera de servicio por días o semanas.</p>
+                </div>
+                <div class="text-6xl text-slate-400 font-thin hidden md:block">→</div>
+                <div class="text-4xl text-slate-400 font-thin md:hidden">↓</div>
+                <div class="p-4 bg-red-100 border-2 border-red-300 rounded-lg shadow-md min-w-[200px]">
+                    <h4 class="font-bold text-red-800 text-lg">3. Personal Inactivo</h4>
+                    <p class="text-red-700">El personal sigue en planilla, generando costo sin operar.</p>
+                </div>
+                <div class="text-6xl text-slate-400 font-thin hidden md:block">→</div>
+                <div class="text-4xl text-slate-400 font-thin md:hidden">↓</div>
+                <div class="p-4 bg-red-100 border-2 border-red-300 rounded-lg shadow-md min-w-[200px]">
+                    <h4 class="font-bold text-red-800 text-lg">4. Sin Cobertura</h4>
+                    <p class="text-red-700">Riesgo para la ciudadanía y falta de respuesta.</p>
+                </div>
+            </div>
+            <div class="mt-8 p-4 bg-green-100 border-2 border-green-300 rounded-lg shadow-md text-center max-w-3xl mx-auto">
+                <h4 class="font-bold text-green-800 text-lg">Solución Outsourcing</h4>
+                <p class="text-green-700">El proveedor reemplaza la unidad dañada <span class="font-bold">inmediatamente</span> con una de su flota de relevo, garantizando servicio 100% continuo. El riesgo es cero para la institución.</p>
+            </div>
+        </section>
+
+        <section id="section6" class="my-12 stat-card">
+            <h2 class="text-3xl font-bold text-sky-700 mb-4 text-center">Proyección a 5 Años: Costo Total de Propiedad (TCO)</h2>
+            <p class="text-lg text-slate-700 max-w-4xl mx-auto text-center mb-8">
+                Al proyectar el costo total acumulado (la inversión inicial más los costos operativos mensuales) a 5 años (60 meses), el modelo de outsourcing demuestra ser financieramente más eficiente. La línea naranja (In-House) empieza con un salto por el CAPEX y mantiene una pendiente más pronunciada.
+            </p>
+            <div class="chart-container-tall">
+                <canvas id="tcoLineChart"></canvas>
+            </div>
+        </section>
+
+        <section id="section7" class="my-12">
+            <h2 class="text-3xl font-bold text-sky-700 mb-6 text-center">Conclusión y Recomendación</h2>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="stat-card p-6">
+                    <div class="text-4xl mb-3">💰</div>
+                    <h4 class="text-xl font-bold text-sky-700 mb-2">Previsibilidad</h4>
+                    <p class="text-slate-600">El outsourcing convierte un gasto de capital (CAPEX) y un OPEX variable en un solo costo mensual 100% predecible.</p>
+                </div>
+                <div class="stat-card p-6">
+                    <div class="text-4xl mb-3">🛡️</div>
+                    <h4 class="text-xl font-bold text-sky-700 mb-2">Transferencia de Riesgo</h4>
+                    <p class="text-slate-600">El riesgo de mantenimiento, personal, accidentes y "downtime" es transferido en su totalidad al proveedor.</p>
+                </div>
+                <div class="stat-card p-6">
+                    <div class="text-4xl mb-3">🎯</div>
+                    <h4 class="text-xl font-bold text-sky-700 mb-2">Enfoque en la Misión</h4>
+                    <p class="text-slate-600">Permite a la Policía Nacional enfocarse en la seguridad, dejando la gestión de ambulancias a expertos.</p>
+                </div>
+            </div>
+            <div class="mt-10 p-6 bg-white rounded-lg shadow-xl max-w-4xl mx-auto border-t-4 border-sky-500">
+                <p class="text-xl text-center text-slate-700">
+                    Aunque el costo mensual puede parecer similar, el **Modelo de Outsourcing es financieramente más atractivo y costo-eficiente** al eliminar la inversión inicial (B/. 4M), eliminar todos los riesgos ocultos de operación y ofrecer un costo total a 5 años significativamente menor y más predecible.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 mt-12 py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 | Análisis Financiero de Suministro de Ambulancias. Documento para fines de evaluación interna.</p>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const wrapLabel = (label) => {
+                const maxLen = 16;
+                if (typeof label !== 'string' || label.length <= maxLen) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).length > maxLen && currentLine.length > 0) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = currentLine ? currentLine + ' ' + word : word;
+                    }
+                }
+                if (currentLine) {
+                    lines.push(currentLine);
+                }
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const commonTooltipOptions = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            };
+
+            const formatCurrency = (value) => {
+                return new Intl.NumberFormat('es-PA', {
+                    style: 'currency',
+                    currency: 'PAB',
+                    minimumFractionDigits: 0
+                }).format(value).replace('PAB', 'B/.');
+            };
+
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: (tooltipItems) => {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                }
+                                return label;
+                            },
+                            label: (context) => {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += formatCurrency(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: (value) => formatCurrency(value)
+                        },
+                        beginAtZero: true
+                    }
+                }
+            };
+            
+            const commonOptionsNoY = { ...commonOptions };
+            delete commonOptionsNoY.scales;
+
+            const ctx1 = document.getElementById('capexDonutChart')?.getContext('2d');
+            if (ctx1) {
+                const rawLabels = ['Compra de 15 Vehículos (Estimado)', 'Equipamiento Médico Avanzado (Estimado)'];
+                new Chart(ctx1, {
+                    type: 'doughnut',
+                    data: {
+                        labels: rawLabels.map(wrapLabel),
+                        datasets: [{
+                            data: [2250000, 1800000], 
+                            backgroundColor: ['#0EA5E9', '#FDBA74'],
+                            borderColor: '#FFFFFF',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                             tooltip: {
+                                callbacks: {
+                                    title: (tooltipItems) => {
+                                        const item = tooltipItems[0];
+                                        let label = rawLabels[item.dataIndex];
+                                        if (Array.isArray(label)) {
+                                            return label.join(' ');
+                                        }
+                                        return label;
+                                    },
+                                    label: (context) => {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label = ' ' + label;
+                                        }
+                                        const value = context.parsed;
+                                        const sum = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((value / sum) * 100).toFixed(1) + '%';
+                                        return ` ${formatCurrency(value)} (${percentage})`;
+                                    }
+                                }
+                            },
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    generateLabels: (chart) => {
+                                        const data = chart.data;
+                                        if (data.labels.length && data.datasets.length) {
+                                            return data.labels.map((label, i) => {
+                                                const meta = chart.getDatasetMeta(0);
+                                                const style = meta.controller.getStyle(i);
+                                                return {
+                                                    text: Array.isArray(label) ? label.join(' ') : label,
+                                                    fillStyle: style.backgroundColor,
+                                                    strokeStyle: style.borderColor,
+                                                    lineWidth: style.borderWidth,
+                                                    hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                                    index: i
+                                                };
+                                            });
+                                        }
+                                        return [];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const ctx2 = document.getElementById('opexBarChart')?.getContext('2d');
+            if (ctx2) {
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Costo Mensual Promedio por Ambulancia'],
+                        datasets: [
+                            {
+                                label: 'In-House: Personal 24/7',
+                                data: [15000],
+                                backgroundColor: '#0EA5E9',
+                                stack: 'In-House'
+                            },
+                            {
+                                label: 'In-House: Mantenimiento/Llantas',
+                                data: [2500],
+                                backgroundColor: '#38BDF8',
+                                stack: 'In-House'
+                            },
+                            {
+                                label: 'In-House: Seguros/Insumos/Admin',
+                                data: [4500],
+                                backgroundColor: '#7DD3FC',
+                                stack: 'In-House'
+                            },
+                            {
+                                label: 'Outsourcing: Membresía Fija (Con Recurso)',
+                                data: [21000],
+                                backgroundColor: '#FDBA74',
+                                stack: 'Outsourcing'
+                            }
+                        ]
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            x: {
+                                stacked: true,
+                            },
+                            y: {
+                                stacked: true,
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: (value) => formatCurrency(value)
+                                }
+                            }
+                        },
+                        plugins: {
+                             ...commonOptions.plugins,
+                            tooltip: {
+                                ...commonOptions.plugins.tooltip,
+                                callbacks: {
+                                    ...commonOptions.plugins.tooltip.callbacks,
+                                    label: (context) => {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += formatCurrency(context.parsed.y);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const ctx3 = document.getElementById('tcoLineChart')?.getContext('2d');
+            if (ctx3) {
+                const labels = ['Mes 0', 'Mes 12', 'Mes 24', 'Mes 36', 'Mes 48', 'Mes 60'];
+                const opexInHouse = 22000 * 15;
+                const opexOutsource = 21000 * 15;
+                const capexInHouse = 4050000;
+                
+                const dataInHouse = [
+                    capexInHouse,
+                    capexInHouse + (opexInHouse * 12),
+                    capexInHouse + (opexInHouse * 24),
+                    capexInHouse + (opexInHouse * 36),
+                    capexInHouse + (opexInHouse * 48),
+                    capexInHouse + (opexInHouse * 60)
+                ];
+                
+                const dataOutsource = [
+                    0,
+                    opexOutsource * 12,
+                    opexOutsource * 24,
+                    opexOutsource * 36,
+                    opexOutsource * 48,
+                    opexOutsource * 60
+                ];
+
+                new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Costo Acumulado In-House',
+                                data: dataInHouse,
+                                borderColor: '#F97316',
+                                backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                                fill: true,
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Costo Acumulado Outsourcing',
+                                data: dataOutsource,
+                                borderColor: '#0EA5E9',
+                                backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                                fill: true,
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        ...commonOptions,
+                        plugins: {
+                             ...commonOptions.plugins,
+                            tooltip: {
+                                ...commonOptions.plugins.tooltip,
+                                callbacks: {
+                                    ...commonOptions.plugins.tooltip.callbacks,
+                                    label: (context) => {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += formatCurrency(context.parsed.y);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        })();
+    </script>
+</body>
+</html>
